@@ -1,5 +1,5 @@
 <?php
-
+use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -14,7 +14,7 @@
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-
+//
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
@@ -25,6 +25,8 @@ $app = new Illuminate\Foundation\Application(
 | incoming requests to this application from both the web and CLI.
 |
 */
+
+
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
@@ -51,5 +53,8 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
+// $app->routeMiddleware([
+//      'client.credentials' => CheckClientCredentials::class,
+//  ]);
 
 return $app;
