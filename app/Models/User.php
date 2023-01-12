@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
-use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\ResetPasswordNotification;
+use Aws\Api\Validator;
 
 class User extends Authenticatable
 {
@@ -26,7 +28,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role'
     ];
 
     /**
@@ -58,4 +60,26 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    // public function adminlte_image()
+    // {
+    //     return profile_photo_url;
+    // }
+    public function adminlte_profile_url()
+    {
+        return 'profile/username';
+    }
+    public function Provider()
+    {
+        return $this->hasMany(Provider::class);
+    }
+    public function providerUserMe()
+    {
+        return $this->hasOne(Provider::class);
+    }
+    public function fcmTokens()
+    {
+        return $this->hasMany(FcmToken::class);
+    }
+
 }
